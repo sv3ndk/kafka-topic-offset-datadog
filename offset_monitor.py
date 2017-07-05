@@ -28,8 +28,8 @@ try:
                     consumer.seek_to_end(tp)
                     last_offset = consumer.position(tp)
 
-                    name = config["metric_name"]
-                    print ("{}: {}".format(name, last_offset))
+                    if config["debug_mode"]:
+                        print ("{}:{}:{}".format(topic, partition, last_offset))
 
                     datadog_client.gauge(metric=config["metric_name"], 
                                          value=last_offset,

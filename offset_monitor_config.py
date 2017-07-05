@@ -19,6 +19,9 @@ config = {
     "poll_period_seconds": 10,
 
     # name of the datadog metric 
-    "metric_name": "kafka.broker.topic.latest.offset"
+    "metric_name": "kafka.broker.topic.latest.offset",
+
+    # when true, also prints the offset to the console
+    "debug_mode": True
 }
 

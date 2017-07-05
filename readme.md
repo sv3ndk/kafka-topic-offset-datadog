@@ -6,6 +6,7 @@ This has been written against the following framework versions:
 
 - kafka 0.10.2.1
 - zookeeper 3.4.9
+- Dogstatsd 5.11.3
 - python 2.7
 
 
