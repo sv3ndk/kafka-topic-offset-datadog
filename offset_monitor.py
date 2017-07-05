@@ -1,10 +1,18 @@
-from datadog import statsd
+from datadog import DogStatsd
 from kafka import KafkaConsumer, TopicPartition
 import time
+import json
 
 from offset_monitor_config import config as config
 
+consumers = None
+
 try:
+
+    config_str = json.dumps(config, indent=2)
+    print ("Starting kafka topic offset monitor with config {}".format(config_str))
+
+    datadog_client = DogStatsd(**config["datadog_client_config"])
 
     consumers = {topic: KafkaConsumer(**config["kafka_consumer_config"])
                  for topic in config["topics"]}
@@ -23,11 +31,11 @@ try:
                     name = config["metric_name"]
                     print ("{}: {}".format(name, last_offset))
 
-                    statsd.gauge(metric=config["metric_name"], 
-                                 value=last_offset,
-                                 tags=["topic:{}".format(topic), 
-                                       "partition:{}".format(partition) ], 
-                                 sample_rate=1)
+                    datadog_client.gauge(metric=config["metric_name"], 
+                                         value=last_offset,
+                                         tags=["topic:{}".format(topic), 
+                                               "partition:{}".format(partition) ], 
+                                         sample_rate=1)
 
 
         time.sleep(config["poll_period_seconds"])
@@ -39,4 +47,3 @@ finally:
             consumer.close(autocommit=False)
 
 
-            

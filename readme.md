@@ -28,18 +28,17 @@ Note that LinkedIn's [Burrow](https://github.com/linkedin/Burrow) tool already p
 
 ## How to use
 
-You need to have a Datadog account to use this script. You also need to have the datadog agent running. The current code assumes it's running on the localhost on the default port, though that's easily made configurable. 
+You need to have a Datadog account to use this script. You also need to have the datadog agent running. 
 
 See also [Datadog's getting started guide](http://docs.datadoghq.com/guides/basic_agent_usage/) for more info.
 
-Setup dependencies
+Setup dependencies:
 
 ```
 pip install -r requirements.txt
 ```
 
-
-Edit the `offset_monitor_config` config file
+Edit the [offset\_monitor\_config.py](./offset_monitor_config.py) config file
 
 Make sure the datadog agent is up and running
 
@@ -60,7 +59,7 @@ The primary goal is to use it to compute consumers lag, although we can also dir
 
 ![](datadog_area_graph.png)
 
-This graph quickly become un-interresting since as the offset becomes very large, it becomes essentially a flat line and does not provide much insight. 
+This graph quickly becomes un-interresting since as the offsets becomes very large, it tends to a set of flat line that do not provide much insight. 
 
 
 
