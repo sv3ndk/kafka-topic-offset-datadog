@@ -24,7 +24,7 @@ This scripts performs the first half of the story :)
 
 Keep in mind that a consumer can potentially consume from many topics, and that set of topics is not necessarily constant if the consumed topic names are specified with a regex. Also consumer imbalance can happen, so some partitions could be lagging due to some node overloading while others might be doing fine. 
 
-## Do I really need this script to follow up the latest offset?
+## Do I really need this script to follow up the latest offsets?
 
 NO!
 
