@@ -24,10 +24,41 @@ This scripts performs the first half of the story :)
 
 Keep in mind that a consumer can potentially consume from many topics, and that set of topics is not necessarily constant if the consumed topic names are specified with a regex. Also consumer imbalance can happen, so some partitions could be lagging due to some node overloading while others might be doing fine. 
 
-Note that LinkedIn's [Burrow](https://github.com/linkedin/Burrow) tool already provides Kafka consumer lag monitoring.
+## Do I really need this script to follow up the latest offset?
+
+NO!
+
+Aha, silly me, after writting this I found out that Kafka brokers are exposing just the right MBean for that, named as follow:
+
+```
+kafka.log:type=Log,name=LogEndOffset,topic=TOPICNAME,partition=PARTITION_NUMBER
+```
+
+So the simplest way to follow that offset with DataDog is to use this kind of JMX integration:
+
+```
+   - include:
+        domain: 'kafka.log'
+        bean_regex: 'kafka.log:type=Log,name=LogStartOffset,topic=.*,partition=.*'
+        attribute:
+          Value:
+            metric_type: gauge
+            alias: kafka.server.topic.partition.log_offset.start
+    - include:
+        domain: 'kafka.log'
+        bean_regex: 'kafka.log:type=Log,name=LogEndOffset,topic=.*,partition=.*'
+        attribute:
+          Value:
+            metric_type: gauge
+            alias: kafka.server.topic.partition.log_offset.end
+```
+
+Note also that LinkedIn's [Burrow](https://github.com/linkedin/Burrow) tool already provides Kafka consumer lag monitoring.
 
 
 ## How to use
+
+... but if one really wants to use my script, here's how to do it :) 
 
 You need to have a Datadog account to use this script. You also need to have the datadog agent running. 
 
